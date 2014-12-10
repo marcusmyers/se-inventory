@@ -1,6 +1,10 @@
 {
   "tag" : "",
+  "serial" : "",
+  "location": {
+    "building": "",
+    "room": ""
+  },
   "port" : "3737",
-  "hostname" : "",
   "server" : ""
 }

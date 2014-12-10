@@ -1,6 +1,6 @@
 {
   "tag": "",
-  "serial": "",
+  "hostname": "",
   "location": {
     "building": "",
     "room": ""
@@ -13,5 +13,6 @@
   "memory": "",
   "cpu": "",
   "cost": "",
-  "po": ""
+  "po": "",
+  "serial": ""
 }

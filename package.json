@@ -4,12 +4,14 @@
   "description": "Inventory software written strictly using node.js",
   "author": "Mark Myers <marcusmyers@gmail.com> (https://github.com/marcusmyers)",
   "repository": {
-	"type": "git",
-	"url": "https://github.com/marcusmyers/se-inventory-client.git"
+    "type": "git",
+    "url": "https://github.com/marcusmyers/se-inventory-client.git"
   },
   "license": "MIT",
   "dependencies": {
-    "jsonfile": "^2.0.0"
+    "jsonfile": "^2.0.0",
+    "express": "^4.10.4",
+    "jade": "*"
   },
   "bin": "./se-inventory.js",
   "preferGlobal": true
