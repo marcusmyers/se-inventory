@@ -1,7 +1,7 @@
 var http = require('http');
 var os   = require('os');
 var jf   = require('jsonfile');
-var express = require('express')
+var express = require('express');
 var app  = express();
 
 var file = './config/agent.json'
