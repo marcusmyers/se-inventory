@@ -1,0 +1,32 @@
+extend layout
+block content
+  h1 #{data.hostname}
+  table.table
+    thead
+      tr
+        th
+          | Inventory Tag
+        th
+          | Serial
+        th
+          | Location
+        th
+          | OS Version
+        th
+          | Memory
+        th
+          | CPU
+    tbody
+      tr
+        td
+          | #{data.tag}
+        td
+          | #{data.serial}
+        td
+          | #{data.location.building} - #{data.location.room}
+        td
+          | #{data.os_version}
+        td
+          | #{data.memory}
+        td
+          | #{data.cpu}
