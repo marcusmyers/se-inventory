@@ -1,0 +1,17 @@
+{
+  "tag": "06XXX",
+  "serial": "",
+  "location": {
+    "building": "",
+    "room": ""
+  },
+  "device_type": {
+    "laptop": "",
+    "desktop": ""
+  },
+  "os_version": "",
+  "memory": "",
+  "cpu": "",
+  "cost": "",
+  "po": ""
+}
