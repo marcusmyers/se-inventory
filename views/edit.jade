@@ -1,0 +1,38 @@
+extend layout
+block content
+  h1 #{data.hostname}
+  form(name="edit", action="/edit", method="post")
+    input(type='hidden', name='_method', value='PUT')
+    table.table
+      thead
+        tr
+          th
+            | Inventory Tag
+          th
+            | Serial
+          th
+            | Location
+          th
+            | OS Version
+          th
+            | Memory
+          th
+            | CPU
+      tbody
+        tr
+          td
+            input(type="text", name="tag", value="#{data.tag}")
+          td
+            input(type="text", name="serial", value="#{data.serial}")
+          td
+            input(type="text", name="building", value="#{data.location.building}")
+            &ndash;
+            input(type="text" name="room", value="#{data.location.room}")
+          td
+            | #{data.os_version}
+          td
+            | #{data.memory}
+          td
+            | #{data.cpu}
+
+    input(type="submit", name="submit", value="Edit")

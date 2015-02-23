@@ -2,17 +2,22 @@ var http = require('http');
 var os   = require('os');
 var jf   = require('jsonfile');
 var express = require('express');
+var serialNumber = require('serial-number');
 var app  = express();
 
-var file = './config/agent.json'
+var conffile = './config/agent.json';
+var datafile = './data/db.json';
 
 // Read in config file
-var config = jf.readFileSync(file);
+var config = jf.readFileSync(conffile);
 
-var db = jf.readFileSync('./data/db.json');
+var db = jf.readFileSync(datafile);
 
 // Set Serial
-db.serial = config.serial;
+var sn;
+serialNumber(function (err, value) {
+  sn = value;
+});
 
 // IF inventory tag is not set, set it using
 // tag from the config file
@@ -51,11 +56,30 @@ if (db.os_version == ""){
     default:
       db.os_version = "Mac OS X";
   }
+}
 
+// If Serial is not set, set it using
+// serial from config file
+if(db.serial ==""){
+  db.serial = config.serial;
+}
+
+// If building is not set, set it using
+// building from config file
+if(db.location.building ==""){
+  db.location.building = config.location.building;
+}
+
+// If room is not set, set it using
+// room from config file
+if(db.location.room ==""){
+  db.location.room = config.location.room;
 }
 
 // Write data to the db.json for inventory
 jf.writeFileSync('./data/db.json', db);
+// Write data to the config.json for inventory
+jf.writeFileSync('./config/agent.json', config);
 
 // Set views folder
 app.set('views', __dirname + '/views');
@@ -69,10 +93,14 @@ app.use(express.static(__dirname + '/public'));
 // =============================================================================
 var router = express.Router(); 				// get an instance of the express Router
 
-// test route to make sure everything is working (accessed at GET http://localhost:3737/)
-// Just shows the current inventory of the device
-router.get('/', function(req, res) {
-  res.render('index', { data : db })
+// route middleware that will happen on every request
+router.use(function(req, res, next) {
+
+    // log each request to the console
+    console.log(req.method, req.url);
+
+    // continue doing what we were doing and go to the route
+    next();
 });
 
 // Returns a json representation of the clients
@@ -81,11 +109,31 @@ router.get('/inventory', function(req, res) {
   res.json(db)
 });
 
+// Edit inventory data
+// router.route('/edit')
+//   .get( function(req, res){
+//     res.render('edit', { data : db });
+//   })
+//   .post( function(req, res){
+//     console.log(req.body);
+//   });
+
 // more routes for our API will happen here
+
+
+// END ROUTES FOR OUR API
+// =============================================================================
+
+
+// Basic route (accessed at GET http://localhost:3737/)
+// Just shows the current inventory of the device
+app.get('/', function(req, res) {
+  res.render('index', { data : db })
+});
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
-app.use(router);
+app.use('/api', router);
 
 var server = app.listen(config.port, function () {
 
@@ -94,18 +142,4 @@ var server = app.listen(config.port, function () {
 
   console.log('Example app listening at http://%s:%s', host, port)
 
-})
-
-/*
-console.log('tmp dir: ', os.tmpdir());
-console.log('hostname: ', os.hostname());
-console.log('type: ', os.type());
-console.log('platform: ', os.platform());
-console.log('arch:', os.arch());
-console.log('release:', os.release());
-console.log('uptime:', (os.uptime()/60));
-console.log('load avg:', os.loadavg());
-console.log('total memory:', os.totalmem());
-console.log('free memory:', os.freemem());
-console.log('network interfaces:', os.networkInterfaces());
-*/
+});
