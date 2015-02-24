@@ -5,11 +5,11 @@
     "building": "",
     "room": ""
   },
-  "laptop": "",
+  "laptop": 0,
   "os_version": "",
   "memory": "",
   "cpu": "",
-  "cost": "",
+  "cost": 0.00,
   "po": "",
   "serial": "",
   "ip": ""

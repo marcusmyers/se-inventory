@@ -15,11 +15,30 @@ var config = jf.readFileSync(conffile);
 // Read Data file
 var db = jf.readFileSync(datafile);
 
+function getIPAddress() {
+  var interfaces = require('os').networkInterfaces();
+  for (var devName in interfaces) {
+    var iface = interfaces[devName];
+
+    if(!/(loopback|vmware|internal|vboxnet|lo|awdl)/gi.test(devName)){
+      for (var i = 0; i < iface.length; i++) {
+        var alias = iface[i];
+        if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal)
+          return alias.address;
+      }
+    }
+  }
+
+  return '0.0.0.0';
+}
+
 // Set Serial
 var sn;
 serialNumber(function (err, value) {
   sn = value;
 });
+
+db.laptop = config.laptop;
 
 // IF inventory tag is not set, set it using
 // tag from the config file
@@ -43,6 +62,12 @@ if (db.memory == ""){
 // os.totalmem()
 if (db.cpu == ""){
   db.cpu = os.cpus()[0].model;
+}
+
+// IF ip address is not set
+// set it
+if (db.ip == ""){
+  db.ip = getIPAddress();
 }
 
 // IF CPU is not set, set it using

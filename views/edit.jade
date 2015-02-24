@@ -1,7 +1,7 @@
 extend layout
 block content
   h1 #{data.hostname}
-  form(name="edit", action="/api/edit", method="post")
+  form(name="edit", action="/edit", method="post")
     input(type='hidden', name='_method', value='PUT')
     table.table
       thead
