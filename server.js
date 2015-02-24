@@ -134,7 +134,7 @@ router.post( '/edit', bodyparser.json(), function(req, res, next){
   db.location.building = req.param('building');
   db.location.room = req.param('room');
   db.po = req.param('po');
-  db.cost = numeral().unformat(req.param('cost')).format('0.00');
+  db.cost = req.param('cost');
   db.ip = req.param('ip');
   jf.writeFileSync('./data/db.json', db);
   res.redirect('/');
@@ -163,7 +163,12 @@ app.post('/edit', bodyparser.urlencoded({'extended':'true'}), function(req, res)
   db.location.building = req.body.building;
   db.location.room = req.body.room;
   db.po = req.body.po;
-  db.cost = numeral().unformat(req.param('cost')).format('0.00');
+  db.cost = req.body.cost;
+  config.tag = req.body.tag;
+  config.serial = req.body.serial;
+  config.location.building = req.body.building;
+  config.location.room = req.body.room;
+  jf.writeFileSync('./config/agent.json', config);
   jf.writeFileSync('./data/db.json', db);
   res.redirect('/');
 });

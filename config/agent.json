@@ -5,7 +5,7 @@
     "building": "",
     "room": ""
   },
-  "laptop": 1,
+  "laptop": 0,
   "port": "3737",
-  "server": "http://localhost:3030"
+  "server": ""
 }
