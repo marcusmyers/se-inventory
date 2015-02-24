@@ -1,7 +1,7 @@
 extend layout
 block content
   h1 #{data.hostname}
-  form(name="edit", action="/edit", method="post")
+  form(name="edit", action="/api/edit", method="post")
     input(type='hidden', name='_method', value='PUT')
     table.table
       thead
@@ -11,13 +11,15 @@ block content
           th
             | Serial
           th
+            | PO
+          th
+            | Cost
+          th
             | Location
           th
             | OS Version
           th
             | Memory
-          th
-            | CPU
       tbody
         tr
           td
@@ -25,14 +27,15 @@ block content
           td
             input(type="text", name="serial", value="#{data.serial}")
           td
-            input(type="text", name="building", value="#{data.location.building}")
-            &ndash;
-            input(type="text" name="room", value="#{data.location.room}")
+            input(type="text", name="po", value="#{data.po}", placeholder="PO")
+          td
+            input(type="text", name="cost", value="#{data.cost}", placeholder="Cost")
+          td
+            input(type="text", name="building", value="#{data.location.building}", placeholder="Building", size="10")
+            | &ndash;
+            input(type="text" name="room", value="#{data.location.room}", placeholder="Rm.", size="4")
           td
             | #{data.os_version}
           td
             | #{data.memory}
-          td
-            | #{data.cpu}
-
     input(type="submit", name="submit", value="Edit")

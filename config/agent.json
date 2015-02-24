@@ -1,11 +1,11 @@
 {
-  "tag" : "",
-  "serial" : "",
+  "tag": "",
+  "serial": "",
   "location": {
     "building": "",
     "room": ""
   },
   "laptop": "",
-  "port" : "3737",
-  "server" : ""
+  "port": "3737",
+  "server": ""
 }

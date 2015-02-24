@@ -4,6 +4,7 @@ var jf           = require('jsonfile');
 var express      = require('express');
 var serialNumber = require('serial-number');
 var app          = express();
+var fs           = require('fs');
 var io           = require('socket.io-client');
 var bodyparser   = require('body-parser');
 var conffile     = './config/agent.json';
@@ -94,16 +95,6 @@ app.use(express.static(__dirname + '/public'));
 // =============================================================================
 var router = express.Router(); 				// get an instance of the express Router
 
-// route middleware that will happen on every request
-router.use(function(req, res, next) {
-
-    // log each request to the console
-    console.log(req.method, req.url);
-
-    // continue doing what we were doing and go to the route
-    next();
-});
-
 // Returns a json representation of the clients
 // inventory data
 router.get('/inventory', function(req, res) {
@@ -111,13 +102,17 @@ router.get('/inventory', function(req, res) {
 });
 
 // Edit inventory data
-// router.route('/edit')
-//   .get( function(req, res){
-//     res.render('edit', { data : db });
-//   })
-//   .post( function(req, res){
-//     console.log(req.body);
-//   });
+router.post( '/edit', bodyparser.json(), function(req, res, next){
+  db.tag = req.param('tag');
+  db.serial = req.param('serial');
+  db.location.building = req.param('building');
+  db.location.room = req.param('room');
+  db.po = req.param('po');
+  db.cost = req.param('cost');
+  db.ip = req.param('ip');
+  jf.writeFileSync('./data/db.json', db);
+  res.redirect('/');
+});
 
 // more routes for our API will happen here
 
@@ -132,6 +127,21 @@ app.get('/', function(req, res) {
   res.render('index', { data : db })
 });
 
+app.get('/edit', function(req, res){
+  res.render('edit', { data : db });
+});
+
+app.post('/edit', bodyparser.urlencoded({'extended':'true'}), function(req, res){
+  db.tag = req.body.tag;
+  db.serial = req.body.serial;
+  db.location.building = req.body.building;
+  db.location.room = req.body.room;
+  db.po = req.body.po;
+  db.cost = req.body.cost;
+  jf.writeFileSync('./data/db.json', db);
+  res.redirect('/');
+});
+
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 app.use('/api', router);
@@ -143,6 +153,9 @@ var server = app.listen(config.port, function () {
 
   var socket = io(config.server);
   socket.emit('inv-message', db);
+  fs.watchFile(datafile, function(){
+    socket.emit('inv-message', db);
+  });
   console.log('Example app listening at http://%s:%s', host, port)
 
 });
