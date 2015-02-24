@@ -1,13 +1,13 @@
-var http = require('http');
-var os   = require('os');
-var jf   = require('jsonfile');
-var express = require('express');
+var http         = require('http');
+var os           = require('os');
+var jf           = require('jsonfile');
+var express      = require('express');
 var serialNumber = require('serial-number');
-var app  = express();
-var io   = require('socket.io-client');
-
-var conffile = './config/agent.json';
-var datafile = './data/db.json';
+var app          = express();
+var io           = require('socket.io-client');
+var bodyparser   = require('body-parser');
+var conffile     = './config/agent.json';
+var datafile     = './data/db.json';
 
 // Read in config file
 var config = jf.readFileSync(conffile);
