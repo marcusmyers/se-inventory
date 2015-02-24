@@ -1,10 +1,10 @@
 {
-  "tag": "06565",
-  "serial": "C02LM35MFH04",
+  "tag" : "",
+  "serial" : "",
   "location": {
-    "building": "NHS",
-    "room": "140"
+    "building": "",
+    "room": ""
   },
-  "port": "3737",
-  "server": ""
+  "port" : "3737",
+  "server" : ""
 }

@@ -5,10 +5,7 @@
     "building": "",
     "room": ""
   },
-  "device_type": {
-    "laptop": "",
-    "desktop": ""
-  },
+  "laptop": "",
   "os_version": "",
   "memory": "",
   "cpu": "",

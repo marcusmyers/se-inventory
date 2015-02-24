@@ -4,13 +4,14 @@ var jf   = require('jsonfile');
 var express = require('express');
 var serialNumber = require('serial-number');
 var app  = express();
+var io   = require('socket.io-client');
 
 var conffile = './config/agent.json';
 var datafile = './data/db.json';
 
 // Read in config file
 var config = jf.readFileSync(conffile);
-
+// Read Data file
 var db = jf.readFileSync(datafile);
 
 // Set Serial
@@ -140,6 +141,8 @@ var server = app.listen(config.port, function () {
   var host = server.address().address
   var port = server.address().port
 
+  var socket = io(config.server);
+  socket.emit('inv-message', db);
   console.log('Example app listening at http://%s:%s', host, port)
 
 });
